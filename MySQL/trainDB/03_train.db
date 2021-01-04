@@ -1,0 +1,67 @@
+# DELETE FROM a
+
+
+
+C:\Bitnami\wampstack-8.0.0-1\mysql\bin>mysql -uroot -p111111
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 14
+Server version: 8.0.22 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| opentutorials      |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> use opentutorials;
+Database changed
+mysql> show tables;
++-------------------------+
+| Tables_in_opentutorials |
++-------------------------+
+| topic                   |
++-------------------------+
+1 row in set (0.00 sec)
+
+mysql> select * from topic;
++----+------------+--------------------+---------------------+--------+---------------------------+
+| id | title      | description        | created             | author | profile                   |
++----+------------+--------------------+---------------------+--------+---------------------------+
+|  1 | MySQL      | MySQL is ...       | 2021-01-03 20:05:36 | egoing | developer                 |
+|  2 | Oracle     | Oracle is ...      | 2021-01-03 20:08:40 | egoing | developer                 |
+|  3 | SQL Server | SQL Server is ...  | 2021-01-03 20:10:30 | duru   | database administrator    |
+|  4 | PostgreSQL | Postgre SQL is ... | 2021-01-03 20:11:25 | taeho  | data scientist, developer |
+|  5 | MongoDB    | MongoDB is ...     | 2021-01-03 20:11:59 | egoing | developer                 |
++----+------------+--------------------+---------------------+--------+---------------------------+
+5 rows in set (0.00 sec)
+
+mysql> DELETE FROM topic WHERE id = 5;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM topic;
++----+------------+--------------------+---------------------+--------+---------------------------+
+| id | title      | description        | created             | author | profile                   |
++----+------------+--------------------+---------------------+--------+---------------------------+
+|  1 | MySQL      | MySQL is ...       | 2021-01-03 20:05:36 | egoing | developer                 |
+|  2 | Oracle     | Oracle is ...      | 2021-01-03 20:08:40 | egoing | developer                 |
+|  3 | SQL Server | SQL Server is ...  | 2021-01-03 20:10:30 | duru   | database administrator    |
+|  4 | PostgreSQL | Postgre SQL is ... | 2021-01-03 20:11:25 | taeho  | data scientist, developer |
++----+------------+--------------------+---------------------+--------+---------------------------+
+4 rows in set (0.00 sec)
+
+mysql>

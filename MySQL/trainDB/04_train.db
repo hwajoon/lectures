@@ -1,0 +1,226 @@
+# RENAME TABLE, Split Table, a LEFT JOIN b ON 
+
+
+
+C:\Bitnami\wampstack-8.0.0-1\mysql\bin>mysql -uroot -p111111
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 15
+Server version: 8.0.22 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use opentutorials;
+Database changed
+mysql> show tables;
++-------------------------+
+| Tables_in_opentutorials |
++-------------------------+
+| topic                   |
++-------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM topic;
++----+------------+--------------------+---------------------+--------+---------------------------+
+| id | title      | description        | created             | author | profile                   |
++----+------------+--------------------+---------------------+--------+---------------------------+
+|  1 | MySQL      | MySQL is ...       | 2021-01-03 20:05:36 | egoing | developer                 |
+|  2 | Oracle     | Oracle is ...      | 2021-01-03 20:08:40 | egoing | developer                 |
+|  3 | SQL Server | SQL Server is ...  | 2021-01-03 20:10:30 | duru   | database administrator    |
+|  4 | PostgreSQL | Postgre SQL is ... | 2021-01-03 20:11:25 | taeho  | data scientist, developer |
++----+------------+--------------------+---------------------+--------+---------------------------+
+4 rows in set (0.00 sec)
+
+mysql> INSERT INTO topic (title, description, created, author, profile) VALUES('MongoDB', 'MongoDB is ...', NOW(), 'egoing', 'developer');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM topic;
++----+------------+--------------------+---------------------+--------+---------------------------+
+| id | title      | description        | created             | author | profile                   |
++----+------------+--------------------+---------------------+--------+---------------------------+
+|  1 | MySQL      | MySQL is ...       | 2021-01-03 20:05:36 | egoing | developer                 |
+|  2 | Oracle     | Oracle is ...      | 2021-01-03 20:08:40 | egoing | developer                 |
+|  3 | SQL Server | SQL Server is ...  | 2021-01-03 20:10:30 | duru   | database administrator    |
+|  4 | PostgreSQL | Postgre SQL is ... | 2021-01-03 20:11:25 | taeho  | data scientist, developer |
+|  6 | MongoDB    | MongoDB is ...     | 2021-01-03 20:49:12 | egoing | developer                 |
++----+------------+--------------------+---------------------+--------+---------------------------+
+5 rows in set (0.00 sec)
+
+mysql> RENAME TABLE topic TO topic_backup;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> SHOW TABLES;
++-------------------------+
+| Tables_in_opentutorials |
++-------------------------+
+| topic_backup            |
++-------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM topic_backup;
++----+------------+--------------------+---------------------+--------+---------------------------+
+| id | title      | description        | created             | author | profile                   |
++----+------------+--------------------+---------------------+--------+---------------------------+
+|  1 | MySQL      | MySQL is ...       | 2021-01-03 20:05:36 | egoing | developer                 |
+|  2 | Oracle     | Oracle is ...      | 2021-01-03 20:08:40 | egoing | developer                 |
+|  3 | SQL Server | SQL Server is ...  | 2021-01-03 20:10:30 | duru   | database administrator    |
+|  4 | PostgreSQL | Postgre SQL is ... | 2021-01-03 20:11:25 | taeho  | data scientist, developer |
+|  6 | MongoDB    | MongoDB is ...     | 2021-01-03 20:49:12 | egoing | developer                 |
++----+------------+--------------------+---------------------+--------+---------------------------+
+5 rows in set (0.00 sec)
+
+mysql>
+mysql> CREATE TABLE topic(
+    -> id INT(11) NOT NULL AUTO_INCREMENT,
+    -> title VARCHAR(100) NOT NULL,
+    -> description TEXT NULL,
+    -> created DATETIME NOT NULL,
+    -> author_id INT(11) NULL,
+    -> PRIMARY KEY(id));
+Query OK, 0 rows affected, 2 warnings (0.03 sec)
+
+mysql> DESC topic;
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| id          | int          | NO   | PRI | NULL    | auto_increment |
+| title       | varchar(100) | NO   |     | NULL    |                |
+| description | text         | YES  |     | NULL    |                |
+| created     | datetime     | NO   |     | NULL    |                |
+| author_id   | int          | YES  |     | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> CREATE TABLE author(
+    -> id INT(11) NOT NULL AUTO_INCREMENT,
+    -> name VARCHAR(50) NOT NULL,
+    -> profile VARCHAR(200) NULL,
+    -> PRIMARY KEY(id));
+Query OK, 0 rows affected, 1 warning (0.05 sec)
+
+mysql> DESC author;
++---------+--------------+------+-----+---------+----------------+
+| Field   | Type         | Null | Key | Default | Extra          |
++---------+--------------+------+-----+---------+----------------+
+| id      | int          | NO   | PRI | NULL    | auto_increment |
+| name    | varchar(50)  | NO   |     | NULL    |                |
+| profile | varchar(200) | YES  |     | NULL    |                |
++---------+--------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT INTO author (id, name, profile) VALUES(1, 'egoing', 'developer');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM author;
++----+--------+-----------+
+| id | name   | profile   |
++----+--------+-----------+
+|  1 | egoing | developer |
++----+--------+-----------+
+1 row in set (0.00 sec)
+
+mysql> INSERT INTO topic (id, title, description, created, author_id) VALUES(1, 'MySQL', 'MySQK is ...', '2018-1-1 12:10:11', 1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM topic;
++----+-------+--------------+---------------------+-----------+
+| id | title | description  | created             | author_id |
++----+-------+--------------+---------------------+-----------+
+|  1 | MySQL | MySQK is ... | 2018-01-01 12:10:11 |         1 |
++----+-------+--------------+---------------------+-----------+
+1 row in set (0.00 sec)
+
+mysql> INSERT INTO topic (id, title, description, created, author_id) VALUES(2, 'Oracle', 'Oracle is ...', '2018-1-3 13:01:01', 1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO author (id, name, profile) VALUES(2, 'duru', 'data administrator');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO topic (id, title, description, created, author_id) VALUES(3, 'SQL Server', 'SQL Server is ...', '2018-01-20 11:01:10', 2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO author (id, name, profile) VALUES(3, 'taeho', 'data scientist, developer');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO topic (id, title, description, created, author_id) VALUES(4, 'PostgreSQL', 'PostgreSQL is ...', '2018-01-23 1:3:3', 3);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO topic (id, title, description, created, author_id) VALUES(5, 'MongoDB', 'MongoDB is ...', '2018-01-30 12:31:3', 1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql>
+mysql>
+mysql> SELECT * FROM topic;
++----+------------+-------------------+---------------------+-----------+
+| id | title      | description       | created             | author_id |
++----+------------+-------------------+---------------------+-----------+
+|  1 | MySQL      | MySQK is ...      | 2018-01-01 12:10:11 |         1 |
+|  2 | Oracle     | Oracle is ...     | 2018-01-03 13:01:01 |         1 |
+|  3 | SQL Server | SQL Server is ... | 2018-01-20 11:01:10 |         2 |
+|  4 | PostgreSQL | PostgreSQL is ... | 2018-01-23 01:03:03 |         3 |
+|  5 | MongoDB    | MongoDB is ...    | 2018-01-30 12:31:03 |         1 |
++----+------------+-------------------+---------------------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM author;
++----+--------+---------------------------+
+| id | name   | profile                   |
++----+--------+---------------------------+
+|  1 | egoing | developer                 |
+|  2 | duru   | data administrator        |
+|  3 | taeho  | data scientist, developer |
++----+--------+---------------------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT * FROM topic LEFT JOIN author ON topic.author_id = author.id;
++----+------------+-------------------+---------------------+-----------+------+--------+---------------------------+
+| id | title      | description       | created             | author_id | id   | name   | profile                   |
++----+------------+-------------------+---------------------+-----------+------+--------+---------------------------+
+|  1 | MySQL      | MySQK is ...      | 2018-01-01 12:10:11 |         1 |    1 | egoing | developer                 |
+|  2 | Oracle     | Oracle is ...     | 2018-01-03 13:01:01 |         1 |    1 | egoing | developer                 |
+|  3 | SQL Server | SQL Server is ... | 2018-01-20 11:01:10 |         2 |    2 | duru   | data administrator        |
+|  4 | PostgreSQL | PostgreSQL is ... | 2018-01-23 01:03:03 |         3 |    3 | taeho  | data scientist, developer |
+|  5 | MongoDB    | MongoDB is ...    | 2018-01-30 12:31:03 |         1 |    1 | egoing | developer                 |
++----+------------+-------------------+---------------------+-----------+------+--------+---------------------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT id, title, description, created, name, profile FROM topic LEFT JOIN author ON topic.author_id = author.id;
+ERROR 1052 (23000): Column 'id' in field list is ambiguous
+mysql>
+mysql>
+mysql>
+mysql> SELECT topic.id, title, description, created, name, profile FROM topic LEFT JOIN author ON topic.author_id = author.id;
++----+------------+-------------------+---------------------+--------+---------------------------+
+| id | title      | description       | created             | name   | profile                   |
++----+------------+-------------------+---------------------+--------+---------------------------+
+|  1 | MySQL      | MySQK is ...      | 2018-01-01 12:10:11 | egoing | developer                 |
+|  2 | Oracle     | Oracle is ...     | 2018-01-03 13:01:01 | egoing | developer                 |
+|  3 | SQL Server | SQL Server is ... | 2018-01-20 11:01:10 | duru   | data administrator        |
+|  4 | PostgreSQL | PostgreSQL is ... | 2018-01-23 01:03:03 | taeho  | data scientist, developer |
+|  5 | MongoDB    | MongoDB is ...    | 2018-01-30 12:31:03 | egoing | developer                 |
++----+------------+-------------------+---------------------+--------+---------------------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT topic.id AS topic_id, title, description, created, name, profile FROM topic LEFT JOIN author ON topic.author_id = author.id;
++----------+------------+-------------------+---------------------+--------+---------------------------+
+| topic_id | title      | description       | created             | name   | profile                   |
++----------+------------+-------------------+---------------------+--------+---------------------------+
+|        1 | MySQL      | MySQK is ...      | 2018-01-01 12:10:11 | egoing | developer                 |
+|        2 | Oracle     | Oracle is ...     | 2018-01-03 13:01:01 | egoing | developer                 |
+|        3 | SQL Server | SQL Server is ... | 2018-01-20 11:01:10 | duru   | data administrator        |
+|        4 | PostgreSQL | PostgreSQL is ... | 2018-01-23 01:03:03 | taeho  | data scientist, developer |
+|        5 | MongoDB    | MongoDB is ...    | 2018-01-30 12:31:03 | egoing | developer                 |
++----------+------------+-------------------+---------------------+--------+---------------------------+
+5 rows in set (0.00 sec)
+
+mysql>
+
+
+
+

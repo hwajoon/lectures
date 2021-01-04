@@ -1,0 +1,192 @@
+# CREATE, DROP, USE, SHOW, DESC, INERT INTO a () VALUES(), SELECT * FROM a
+
+# mysql -uroot -p     // _u:user / root:사용자 ID    /  -p:password#
+# CREATE DATABASE opentutorials;    # 데이터베이스 생성
+# DROP DATABASE opentutorials;      # 데이터베이스 삭제 
+# USE opentutorials;    # opentutorials 스키마에 있는 표를 대상으로 명령을 실행
+# CREATE TABLE topic(
+  )
+# SHOW TABLES;
+# DESC topic;
+# INSERT INTO topic (title, description, created, author, profile) 
+								VALUES('MySQL', 'MySQL is ...', NOW(), 'egoing', 'developer');
+# SELECT * FROM topic;
+
+
+////////////////////////////////////////////////////////////////////////////
+
+C:\Bitnami\wampstack-8.0.0-1\mysql\bin>mysql -uroot -p
+Enter password: ******
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 11
+Server version: 8.0.22 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> CREATE DATABASE opentutorials;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> DROP DATABASE opentutorials;      # 데이터베이스 삭제 
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> CREATE DATABASE opentutorials;    # 데이터베이스 생성
+Query OK, 1 row affected (0.00 sec)
+
+mysql> show DATABASES;     # 모든 데이터베이스를 보여줘
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              | 
+| opentutorials      |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.01 sec)
+
+mysql> USE opentutorials;    # opentutorials 스키마에 있는 표를 대상으로 명령을 실행
+Database changed
+
+mysql> CREATE TABLE topic(
+    -> id INT(11) NOT NULL AUTO_INCREMENT,
+    -> title VARCHAR(100) NOT NULL,
+    -> description TEXT NULL,
+    -> created DATETIME NOT NULL,
+    -> author VARCHAR(30) NULL,
+    -> profile VARCHAR(100) NULL,
+    -> PRIMARY KEY(id));
+Query OK, 0 rows affected, 1 warning (0.04 sec)
+
+mysql> SHOW TABLES;
++-------------------------+
+| Tables_in_opentutorials |
++-------------------------+
+| topic                   |
++-------------------------+
+1 row in set (0.01 sec)
+
+mysql> DESC topic;
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| id          | int          | NO   | PRI | NULL    | auto_increment |
+| title       | varchar(100) | NO   |     | NULL    |                |
+| description | text         | YES  |     | NULL    |                |
+| created     | datetime     | NO   |     | NULL    |                |
+| author      | varchar(30)  | YES  |     | NULL    |                |
+| profile     | varchar(100) | YES  |     | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+6 rows in set (0.00 sec)
+
+mysql> INSERT INTO topic (title, description, created, author, profile) 
+								VALUES('MySQL', 'MySQL is ...', NOW(), 'egoing', 'developer');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM topic;
++----+-------+--------------+---------------------+--------+-----------+
+| id | title | description  | created             | author | profile   |
++----+-------+--------------+---------------------+--------+-----------+
+|  1 | MySQL | MySQL is ... | 2021-01-03 20:05:36 | egoing | developer |
++----+-------+--------------+---------------------+--------+-----------+
+1 row in set (0.00 sec)
+
+mysql> INSERT INTO topic (title, description, created, author, profile) VALUES('ORACLE', 'ORACLE is ...', NOW(), 'egoing', 'developer');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM topic;
++----+--------+---------------+---------------------+--------+-----------+
+| id | title  | description   | created             | author | profile   |
++----+--------+---------------+---------------------+--------+-----------+
+|  1 | MySQL  | MySQL is ...  | 2021-01-03 20:05:36 | egoing | developer |
+|  2 | ORACLE | ORACLE is ... | 2021-01-03 20:08:40 | egoing | developer |
++----+--------+---------------+---------------------+--------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> INSERT INTO topic (title, description, created, author, profile) VALUES('SQL Server', 'SQL Server is ...', NOW(), 'duru', 'database administrator');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO topic (title, description, created, author, profile) VALUES('PostgreSQL', 'Postgre SQL is ...', NOW(), 'taeho', 'data scientist, developer');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO topic (title, description, created, author, profile) VALUES('MongoDB', 'MongoDB is ...', NOW(), 'egoing', 'developer');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM topic;
++----+------------+--------------------+---------------------+--------+---------------------------+
+| id | title      | description        | created             | author | profile                   |
++----+------------+--------------------+---------------------+--------+---------------------------+
+|  1 | MySQL      | MySQL is ...       | 2021-01-03 20:05:36 | egoing | developer                 |
+|  2 | ORACLE     | ORACLE is ...      | 2021-01-03 20:08:40 | egoing | developer                 |
+|  3 | SQL Server | SQL Server is ...  | 2021-01-03 20:10:30 | duru   | database administrator    |
+|  4 | PostgreSQL | Postgre SQL is ... | 2021-01-03 20:11:25 | taeho  | data scientist, developer |
+|  5 | MongoDB    | MongoDB is ...     | 2021-01-03 20:11:59 | egoing | developer                 |
++----+------------+--------------------+---------------------+--------+---------------------------+
+5 rows in set (0.00 sec)
+
+mysql> select id, title, created, author from topic;
++----+------------+---------------------+--------+
+| id | title      | created             | author |
++----+------------+---------------------+--------+
+|  1 | MySQL      | 2021-01-03 20:05:36 | egoing |
+|  2 | ORACLE     | 2021-01-03 20:08:40 | egoing |
+|  3 | SQL Server | 2021-01-03 20:10:30 | duru   |
+|  4 | PostgreSQL | 2021-01-03 20:11:25 | taeho  |
+|  5 | MongoDB    | 2021-01-03 20:11:59 | egoing |
++----+------------+---------------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT "egoing", 1+1;
++--------+-----+
+| egoing | 1+1 |
++--------+-----+
+| egoing |   2 |
++--------+-----+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM topic where author = 'egoing';
++----+---------+----------------+---------------------+--------+-----------+
+| id | title   | description    | created             | author | profile   |
++----+---------+----------------+---------------------+--------+-----------+
+|  1 | MySQL   | MySQL is ...   | 2021-01-03 20:05:36 | egoing | developer |
+|  2 | ORACLE  | ORACLE is ...  | 2021-01-03 20:08:40 | egoing | developer |
+|  5 | MongoDB | MongoDB is ... | 2021-01-03 20:11:59 | egoing | developer |
++----+---------+----------------+---------------------+--------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT id, title, created FROM topic where author = 'egoing';
++----+---------+---------------------+
+| id | title   | created             |
++----+---------+---------------------+
+|  1 | MySQL   | 2021-01-03 20:05:36 |
+|  2 | ORACLE  | 2021-01-03 20:08:40 |
+|  5 | MongoDB | 2021-01-03 20:11:59 |
++----+---------+---------------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT id, title, created, author FROM topic WHERE author = 'egoing' ORDER BY id DESC;
++----+---------+---------------------+--------+
+| id | title   | created             | author |
++----+---------+---------------------+--------+
+|  5 | MongoDB | 2021-01-03 20:11:59 | egoing |
+|  2 | ORACLE  | 2021-01-03 20:08:40 | egoing |
+|  1 | MySQL   | 2021-01-03 20:05:36 | egoing |
++----+---------+---------------------+--------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT id, title, created, author FROM topic WHERE author = 'egoing' ORDER BY id DESC LIMIT 2;
++----+---------+---------------------+--------+
+| id | title   | created             | author |
++----+---------+---------------------+--------+
+|  5 | MongoDB | 2021-01-03 20:11:59 | egoing |
+|  2 | ORACLE  | 2021-01-03 20:08:40 | egoing |
++----+---------+---------------------+--------+
+2 rows in set (0.00 sec)
+
+mysql>
+
