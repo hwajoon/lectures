@@ -1,0 +1,19 @@
+FROM node:current-slim
+
+#ENV NODE_ENV=production
+
+WORKDIR /app
+
+#COPY ["package.json", "package-lock.json*", "./"]
+COPY package.json .
+
+#RUN npm install --production
+RUN npm install
+
+EXPOSE 3000
+
+COPY . .
+
+#CMD [ "node", "app.js" ]
+# npm start로 구동한다는 의미
+CMD [ "npm", "start" ]   
